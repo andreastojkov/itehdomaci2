@@ -8,6 +8,7 @@ use App\Models\Provider;
 use App\Models\Service;
 use App\Http\Resources\AppointmentRatingResource;
 use App\Http\Resources\AppointmentRatingCollection;
+use App\Models\User;
 
 class AppointmentRatingController extends Controller
 {
