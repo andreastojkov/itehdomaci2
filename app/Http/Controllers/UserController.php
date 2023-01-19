@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Provider;
 use App\Models\AppointmentRating;
+use App\Models\Provider;
 use App\Models\Service;
-use App\Http\Resources\ProviderResource;
-use App\Http\Resources\ProviderCollection;
 use App\Models\User;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
-class ProviderController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $providers = Provider::all();
-        return new ProviderCollection($providers);
+        return new UserCollection(User::all());
     }
 
     /**
@@ -32,6 +31,7 @@ class ProviderController extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -50,18 +50,18 @@ class ProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Provider $provider)
+    public function show(User $user)
     {
-        return new ProviderResource($provider);
+        return new UserResource($user);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Provider  $provider
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Provider $provider)
+    public function edit(User $user)
     {
         //
     }

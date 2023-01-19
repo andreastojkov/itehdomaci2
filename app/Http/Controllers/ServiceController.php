@@ -8,6 +8,7 @@ use App\Models\Provider;
 use App\Models\Service;
 use App\Http\Resources\ServiceResource;
 use App\Http\Resources\ServiceCollection;
+use App\Models\User;
 
 class ServiceController extends Controller
 {
