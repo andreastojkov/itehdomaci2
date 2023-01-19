@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('appointment_ratings', function (Blueprint $table) {
+        Schema::create('appointments_ratings', function (Blueprint $table) {
             $table->id();
             $table->timestamp('date_and_time');
             $table->foreignId('user');
