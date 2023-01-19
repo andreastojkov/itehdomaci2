@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Http\Resources\ProviderResource;
 use App\Http\Resources\ProviderCollection;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class ProviderController extends Controller
 {
@@ -41,7 +42,24 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:150',
+            'phone_number' => 'required|string|max:150|unique:providers',
+            'years_of_experience' => 'required|numeric|lte:30|gte:1',
+            'email' => 'required|email|unique:providers',
+        ]);
+
+        if ($validator->fails())
+            return response()->json($validator->errors());
+
+        $provider = Provider::create([
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'years_of_experience' => $request->years_of_experience,
+            'email' => $request->email,
+        ]);
+
+        return response()->json(['Provider is created successfully.', new ProviderResource($provider)]);
     }
 
     /**
@@ -75,7 +93,24 @@ class ProviderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:150',
+            'phone_number' => 'required|string|max:150|unique:providers,phone_number,'.$provider->id,
+            'years_of_experience' => 'required|numeric|lte:30|gte:1',
+            'email' => 'required|email|unique:providers,email,'.$provider->id,
+        ]);
+
+        if ($validator->fails())
+            return response()->json($validator->errors());
+
+        $provider->name = $request->name;
+        $provider->phone_number = $request->phone_number;
+        $provider->years_of_experience = $request->years_of_experience;
+        $provider->email = $request->email;
+
+        $provider->save();
+
+        return response()->json(['Provider is created successfully.', new ProviderResource($provider)]);
     }
 
     /**
@@ -84,8 +119,10 @@ class ProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Provider $provider)
     {
-        //
+        $provider->delete();
+
+        return response()->json('Provider is deleted successfully.');
     }
 }
