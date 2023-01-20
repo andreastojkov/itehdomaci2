@@ -22,8 +22,9 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//moj profil
+Route::middleware('auth:sanctum')->get('/myprofile', function (Request $request) {
+    return new UserResource($request->user());
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -37,7 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //user
     Route::resource('apprat', AppointmentRatingController::class)->only(['store', 'update', 'destroy']); 
 
-    //svi
+    //svi koji su ulogovani
     Route::post('/logout', [AuthController::class, 'logout']); 
     Route::get('/myapprat', [UserAppointmentRatingController::class, 'myapprat']); 
     Route::resource('users', UserController::class)->only(['update']); 
