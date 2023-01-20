@@ -52,6 +52,9 @@ class ProviderController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors());
 
+        if(auth()->user()->isUser())
+            return response()->json('You are not authorized to create new providers.'); 
+
         $provider = Provider::create([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
@@ -103,6 +106,9 @@ class ProviderController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors());
 
+        if(auth()->user()->isUser())
+            return response()->json('You are not authorized to update providers.');      
+
         $provider->name = $request->name;
         $provider->phone_number = $request->phone_number;
         $provider->years_of_experience = $request->years_of_experience;
@@ -110,7 +116,7 @@ class ProviderController extends Controller
 
         $provider->save();
 
-        return response()->json(['Provider is created successfully.', new ProviderResource($provider)]);
+        return response()->json(['Provider is updated successfully.', new ProviderResource($provider)]);
     }
 
     /**
@@ -121,6 +127,9 @@ class ProviderController extends Controller
      */
     public function destroy(Provider $provider)
     {
+        if(auth()->user()->isUser())
+            return response()->json('You are not authorized to delete providers.'); 
+            
         $provider->delete();
 
         return response()->json('Provider is deleted successfully.');
