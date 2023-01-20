@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserAppointmentRatingController;
 use App\Http\Controllers\ProviderAppointmentRatingController;
 use App\Http\Controllers\ServiceAppointmentRatingController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,16 +26,35 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('services', ServiceController::class);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    //admin
+    Route::resource('services', ServiceController::class)->only(['store', 'update', 'destroy']); 
+    Route::resource('providers', ProviderController::class)->only(['store', 'update', 'destroy']); 
+    Route::resource('users', UserController::class)->only(['destroy']); 
+    Route::post('/register', [AuthController::class, 'register']); 
+    Route::resource('users', UserController::class)->only(['index', 'show']); 
 
-Route::resource('providers', ProviderController::class);
+    //user
+    Route::resource('apprat', AppointmentRatingController::class)->only(['store', 'update', 'destroy']); 
 
-Route::resource('apprat', AppointmentRatingController::class);
+    //svi
+    Route::post('/logout', [AuthController::class, 'logout']); 
+    Route::get('/myapprat', [UserAppointmentRatingController::class, 'myapprat']); 
+    Route::resource('users', UserController::class)->only(['update']); 
 
-Route::resource('users', UserController::class)->only(['index', 'show']);
+});
+
+//javne
+Route::resource('services', ServiceController::class)->only(['index', 'show']);
+
+Route::resource('providers', ProviderController::class)->only(['index', 'show']);
+
+Route::resource('apprat', AppointmentRatingController::class)->only(['index', 'show']);
 
 Route::get('/users/{id}/apprat', [UserAppointmentRatingController::class, 'index']);
 
 Route::get('/providers/{id}/apprat', [ProviderAppointmentRatingController::class, 'index']);
 
 Route::get('/services/{id}/apprat', [ServiceAppointmentRatingController::class, 'index']);
+
+Route::post('/login', [AuthController::class, 'login']);
