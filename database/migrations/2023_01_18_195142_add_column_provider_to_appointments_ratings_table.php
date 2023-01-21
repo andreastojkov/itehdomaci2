@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('appointments_ratings', function (Blueprint $table) {
-            $table->foreignId('provider');
+            $table->foreignId('providers');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('appointments_ratings', function (Blueprint $table) {
-            $table->dropForeign('provider');
+            $table->dropForeign('providers');
         });
     }
 };

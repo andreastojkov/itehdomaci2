@@ -29,19 +29,21 @@ Route::middleware('auth:sanctum')->get('/myprofile', function (Request $request)
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //admin
-    Route::resource('services', ServiceController::class)->only(['store', 'update', 'destroy']); 
-    Route::resource('providers', ProviderController::class)->only(['store', 'update', 'destroy']); 
-    Route::resource('users', UserController::class)->only(['destroy']); 
-    Route::post('/register', [AuthController::class, 'register']); 
-    Route::resource('users', UserController::class)->only(['index', 'show']); 
+    Route::resource('services', ServiceController::class)->only(['store', 'update', 'destroy']); //okej
+    //prikaz: moze svi, ostalo mora admin
+    Route::resource('providers', ProviderController::class)->only(['store', 'update', 'destroy']);  //okej
+    //prikaz: moze svi, ostalo mora admin
+    Route::resource('users', UserController::class)->only(['destroy']);  //okej
+    Route::post('/register', [AuthController::class, 'register']); //okej
+    Route::resource('users', UserController::class)->only(['index', 'show']); //okej
 
     //user
-    Route::resource('apprat', AppointmentRatingController::class)->only(['store', 'update', 'destroy']); 
+    Route::resource('apprat', AppointmentRatingController::class)->only(['store', 'update', 'destroy']); //okej
 
     //svi koji su ulogovani
-    Route::post('/logout', [AuthController::class, 'logout']); 
-    Route::get('/myapprat', [UserAppointmentRatingController::class, 'myapprat']); 
-    Route::resource('users', UserController::class)->only(['update']); 
+    Route::post('/logout', [AuthController::class, 'logout']);  //okej
+    Route::get('/myapprat', [UserAppointmentRatingController::class, 'myapprat']); //okej
+    Route::resource('users', UserController::class)->only(['update']);  //okej
 
 });
 

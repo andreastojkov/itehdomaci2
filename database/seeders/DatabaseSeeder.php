@@ -38,9 +38,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
-        User::factory(5)->create();
-        Provider::factory(10)->create();
-
         $service1 = Service::create([
             'name' => 'Ocni pregled'
         ]);
